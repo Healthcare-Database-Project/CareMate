@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->id('user_id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('phone_number')->unique();
+            $table->string('gender');
+            $table->date('birth_date');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
@@ -35,6 +37,20 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        Schema::create('patients', function(Blueprint $table){
+            $table->unsignedBigInteger('patient_id');
+            $table->index('patient_id');
+            $table->foreign('patient_id')->references('user_id')->on('users')->onDelete('cascade');
+        });
+
+
+        Schema::create('admins', function(Blueprint $table) {
+            $table->unsignedBigInteger('admin_id');
+            $table->index('admin_id');
+            $table->foreign('admin_id')->references('user_id')->on('users')->onDelete('cascade');
+        });
+
     }
 
     /**
@@ -42,6 +58,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('patients');
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
