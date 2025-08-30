@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\MedicineCatalogueController;
+use App\Models\MedicineCatalogue;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,10 +16,5 @@ Route::get('/invoice', function () {
     return view('invoice');
 });
 
-Route::get('/medicinecatalogue', function () {
-    return view('medicinecatalogue');
-});
+Route::get('/medicinecatalogue', [MedicineCatalogueController::class, 'index']);
 
-Route::get('/tailwind', function () {
-    return view('tailwindtest');
-});
