@@ -6,14 +6,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dbconn', function(){
+Route::get('/dbconn', function () {
     return view('dbconn');
 });
 
-Route::get('/invoice', function(){
+Route::get('/invoice', function () {
     return view('invoice');
 });
 
-Route::get('/medicinecatalogue', function(){
+Route::get('/medicinecatalogue', function () {
     return view('medicinecatalogue');
+});
+
+Route::get('/tailwind', function () {
+    return view('tailwindtest');
 });
