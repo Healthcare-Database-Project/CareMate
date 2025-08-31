@@ -1,0 +1,33 @@
+@extends('layout')
+
+@section('content')
+<div class="container mx-auto p-8">
+    <h1 class="text-center text-4xl">Medicine Catalogue</h1>
+    @include('partials._search')
+    <div class="grid grid-cols-3 grid-flow-row gap-6 px-6 py-6 items-center font-sans w-full">
+        @foreach ($medicines as $medicine)
+            <div class="bg-white rounded-lg shadow-xl p-4 flex flex-col justify-between h-40">
+                <!-- Top: Common & Generic Name -->
+                <div>
+                    <h2 class="text-lg font-bold text-gray-800">{{ $medicine->common_name }}</h2>
+                    <p class="text-sm text-gray-500 italic">{{ $medicine->generic_name }}</p>
+                </div>
+
+                <!-- Middle: Type & Dosage -->
+                <div class="mt-2">
+                    <p class="text-sm text-gray-600">Type: {{ $medicine->med_type }}</p>
+                    <p class="text-sm text-gray-600">Dosage: {{ $medicine->dosage }}</p>
+                </div>
+
+                <!-- Bottom: Price -->
+                <div class="mt-3 flex justify-between items-center">
+                    <p class="text-blue-600 font-semibold">Price: ৳{{ number_format($medicine->price, 2) }} / unit</p>
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded-xl shadow">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+@endsection

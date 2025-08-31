@@ -9,8 +9,8 @@ class MedicineCatalogueController extends Controller
 {
     // Show all medicine
     public function index() {
-        return view('medicinecatalogue', [
-            'medicines' => MedicineCatalogue::all()
+        return view('medicinecatalogue.index', [
+            'medicines' => MedicineCatalogue::orderBy('common_name','asc')->filter(request(['search']))->get()
         ]);
     }
 

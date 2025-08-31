@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\MedicineCatalogueController;
 use App\Models\MedicineCatalogue;
+use App\Http\Livewire\MedicineCart;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MedicineCatalogueController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,4 +18,5 @@ Route::get('/invoice', function () {
 });
 
 Route::get('/medicinecatalogue', [MedicineCatalogueController::class, 'index']);
+
 
