@@ -11,7 +11,7 @@ class CartController extends Controller
     public function index()
     {
         $cart = session()->get('cart', []);
-        return view('cart', compact('cart'));
+        return view('cart.index', compact('cart'));
     }
 
     public function addToCart(Request $request)
@@ -45,6 +45,39 @@ class CartController extends Controller
     {
         $total = collect($cart)->sum(fn($item) => $item['price'] * $item['qty']);
         session()->put('cartItemsTotal', $total);
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        $cart = session()->get('cart', []);
+        if (isset($cart[$id])) {
+            if ($request->action === 'increment') {
+                $cart[$id]['qty'] += 1;
+            } elseif ($request->action === 'decrement' && $cart[$id]['qty'] > 1) {
+                $cart[$id]['qty'] -= 1;
+            }
+            session()->put('cart', $cart);
+        }
+        $this->calculateCartItemsTotal($cart);
+        return back();
+    }
+
+    public function delete($id)
+    {
+        $cart = session()->get('cart', []);
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+            session()->put('cart', $cart);
+        }
+        $this->calculateCartItemsTotal($cart);
+        return back();
+    }
+
+    public function clear()
+    {
+        session()->forget('cart');
+        return back();
     }
 }
 
