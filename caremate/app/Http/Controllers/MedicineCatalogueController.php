@@ -9,9 +9,8 @@ class MedicineCatalogueController extends Controller
 {
     // Show all medicine
     public function index() {
-        return view('medicinecatalogue.index', [
-            'medicines' => MedicineCatalogue::orderBy('common_name','asc')->filter(request(['search']))->get()
-        ]);
+        $medicines = MedicineCatalogue::orderBy('common_name','asc')->filter(request(['search']))->get();
+        return view('medicinecatalogue.index', compact('medicines'));
     }
 
     // Show a single medicine

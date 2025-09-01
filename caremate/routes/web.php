@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Models\MedicineCatalogue;
 use App\Http\Livewire\MedicineCart;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,9 @@ Route::get('/invoice', function () {
     return view('invoice');
 });
 
-Route::get('/medicinecatalogue', [MedicineCatalogueController::class, 'index']);
+Route::get('/medicinecatalogue', [MedicineCatalogueController::class, 'index'])->name('home');
+Route::get('cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+
 
 
