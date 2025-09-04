@@ -13,6 +13,13 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'user_id';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -21,6 +28,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone_number',
+        'gender',
+        'birth_date',
+        'role',
+        'specialization',
+        'experience_years',
+        'location',
+        'consultation_fee',
+        'availability',
+        'bio',
     ];
 
     /**
@@ -43,6 +60,48 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'birth_date' => 'date',
+            'availability' => 'array',
         ];
+    }
+
+    /**
+     * Check if user is a doctor.
+     */
+    public function isDoctor()
+    {
+        return $this->role === 'doctor';
+    }
+
+    /**
+     * Check if user is a patient.
+     */
+    public function isPatient()
+    {
+        return $this->role === 'patient';
+    }
+
+    /**
+     * Scope to get only doctors.
+     */
+    public function scopeDoctors($query)
+    {
+        return $query->where('role', 'doctor');
+    }
+
+    /**
+     * Get the appointments for the user.
+     */
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'user_id', 'user_id');
+    }
+
+    /**
+     * Get the doctor appointments (when user is a doctor).
+     */
+    public function doctorAppointments()
+    {
+        return $this->hasMany(Appointment::class, 'doctor_id', 'user_id');
     }
 }
