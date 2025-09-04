@@ -48,7 +48,7 @@
                                 <span class="font-medium">Location:</span> {{ $doctor->location }}
                             </p>
                             <p class="text-sm text-gray-600">
-                                <span class="font-medium">Fee:</span> ${{ $doctor->consultation_fee }}
+                                <span class="font-medium">Fee:</span> ৳{{ $doctor->consultation_fee }}
                             </p>
                         </div>
 
