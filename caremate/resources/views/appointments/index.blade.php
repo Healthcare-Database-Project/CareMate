@@ -29,30 +29,30 @@
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="text-xl font-semibold text-gray-800">{{ $doctor->name }}</h3>
+                                <h3 class="text-xl font-semibold text-gray-800">{{ $doctor->user->first_name }} {{ $doctor->user->last_name }}</h3>
                                 <p class="text-gray-600">{{ $doctor->specialization }}</p>
                             </div>
                         </div>
                         
                         <div class="space-y-2 mb-4">
                             <p class="text-sm text-gray-600">
-                                <span class="font-medium">Experience:</span> {{ $doctor->experience_years }} years
+                                <span class="font-medium">Experience:</span> {{ $doctor->years_of_experience }} years
                             </p>
                             <p class="text-sm text-gray-600">
-                                <span class="font-medium">Phone:</span> {{ $doctor->phone_number }}
+                                <span class="font-medium">Phone:</span> {{ $doctor->phone }}
                             </p>
                             <p class="text-sm text-gray-600">
-                                <span class="font-medium">Email:</span> {{ $doctor->email }}
+                                <span class="font-medium">Email:</span> {{ $doctor->user->email }}
                             </p>
                             <p class="text-sm text-gray-600">
-                                <span class="font-medium">Location:</span> {{ $doctor->location }}
+                                <span class="font-medium">BMDC Reg:</span> {{ $doctor->bmdc_reg_no }}
                             </p>
                             <p class="text-sm text-gray-600">
                                 <span class="font-medium">Fee:</span> ৳{{ $doctor->consultation_fee }}
                             </p>
                         </div>
 
-                        <a href="{{ route('appointments.create') }}?doctor_id={{ $doctor->user_id }}" 
+                        <a href="{{ route('appointments.create') }}?doctor_id={{ $doctor->doctor_id }}" 
                            class="w-full bg-blue-500 hover:bg-blue-600 text-white text-center py-2 px-4 rounded-lg transition duration-200 inline-block">
                             Book Appointment
                         </a>

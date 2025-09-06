@@ -20,14 +20,14 @@
                             <div class="flex-1">
                                 <div class="flex items-center mb-2">
                                     <h3 class="text-xl font-semibold text-gray-800 mr-4">
-                                        Dr. {{ $appointment->doctor->name }}
+                                        Dr. {{ $appointment->doctor->user->first_name }} {{ $appointment->doctor->user->last_name }}
                                     </h3>
                                     <span class="px-3 py-1 rounded-full text-sm font-medium
-                                        @if($appointment->status === 'pending') bg-yellow-100 text-yellow-800
-                                        @elseif($appointment->status === 'confirmed') bg-green-100 text-green-800
-                                        @elseif($appointment->status === 'completed') bg-blue-100 text-blue-800
+                                        @if($appointment->appointment_status === 'pending') bg-yellow-100 text-yellow-800
+                                        @elseif($appointment->appointment_status === 'confirmed') bg-green-100 text-green-800
+                                        @elseif($appointment->appointment_status === 'completed') bg-blue-100 text-blue-800
                                         @else bg-red-100 text-red-800 @endif">
-                                        {{ ucfirst($appointment->status) }}
+                                        {{ ucfirst($appointment->appointment_status) }}
                                     </span>
                                 </div>
                                 
@@ -37,19 +37,13 @@
                                 
                                 <p class="text-gray-600 mb-1">
                                     <span class="font-medium">Date & Time:</span> 
-                                    {{ $appointment->appointment_date->format('M d, Y') }} at 
+                                    {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('M d, Y') }} at 
                                     {{ date('h:i A', strtotime($appointment->appointment_time)) }}
                                 </p>
                                 
                                 <p class="text-gray-600 mb-1">
-                                    <span class="font-medium">Patient:</span> {{ $appointment->patient_name }}
+                                    <span class="font-medium">Patient:</span> {{ $appointment->patient->user->first_name }} {{ $appointment->patient->user->last_name }}
                                 </p>
-                                
-                                @if($appointment->symptoms)
-                                    <p class="text-gray-600 mb-1">
-                                        <span class="font-medium">Symptoms:</span> {{ $appointment->symptoms }}
-                                    </p>
-                                @endif
                             </div>
                             
                             <div class="mt-4 md:mt-0 md:ml-6">

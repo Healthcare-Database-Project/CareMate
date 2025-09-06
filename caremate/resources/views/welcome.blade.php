@@ -271,7 +271,7 @@
             <ul class="nav-links">
                 <li><a href="{{ route('home') }}">Medicines</a></li>
                 <li><a href="{{ route('appointments.index') }}">Appointments</a></li>
-                <li><a href="#about">About</a></li>
+                <li><a href="#about">Login</a></li>
             </ul>
         </div>
     </nav>

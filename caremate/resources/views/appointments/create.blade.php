@@ -27,8 +27,8 @@
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">Choose a doctor...</option>
                         @foreach($doctors as $doctor)
-                            <option value="{{ $doctor->user_id }}" {{ request('doctor_id') == $doctor->user_id ? 'selected' : '' }}>
-                                {{ $doctor->name }} - {{ $doctor->specialization }}
+                            <option value="{{ $doctor->doctor_id }}" {{ request('doctor_id') == $doctor->doctor_id ? 'selected' : '' }}>
+                                {{ $doctor->user->first_name }} {{ $doctor->user->last_name }} - {{ $doctor->specialization }}
                             </option>
                         @endforeach
                     </select>

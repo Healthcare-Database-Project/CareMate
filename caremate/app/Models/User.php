@@ -12,96 +12,58 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'user_id';
+    protected $table = 'users';
+    protected $primaryKey = 'users_id';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
-        'phone_number',
-        'gender',
-        'birth_date',
         'role',
-        'specialization',
-        'experience_years',
-        'location',
-        'consultation_fee',
-        'availability',
-        'bio',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'birth_date' => 'date',
-            'availability' => 'array',
         ];
     }
 
-    /**
-     * Check if user is a doctor.
-     */
-    public function isDoctor()
+    public function patient()
     {
-        return $this->role === 'doctor';
+        return $this->hasOne(Patient::class, 'users_id', 'users_id');
     }
 
-    /**
-     * Check if user is a patient.
-     */
-    public function isPatient()
+    public function doctor()
     {
-        return $this->role === 'patient';
+        return $this->hasOne(Doctor::class, 'users_id', 'users_id');
     }
 
-    /**
-     * Scope to get only doctors.
-     */
+    public function admin()
+    {
+        return $this->hasOne(Admin::class, 'users_id', 'users_id');
+    }
+
+    // Helper scopes for role-based queries
+    public function scopePatients($query)
+    {
+        return $query->where('role', 'patient');
+    }
+
     public function scopeDoctors($query)
     {
         return $query->where('role', 'doctor');
     }
 
-    /**
-     * Get the appointments for the user.
-     */
-    public function appointments()
+    public function scopeAdmins($query)
     {
-        return $this->hasMany(Appointment::class, 'user_id', 'user_id');
-    }
-
-    /**
-     * Get the doctor appointments (when user is a doctor).
-     */
-    public function doctorAppointments()
-    {
-        return $this->hasMany(Appointment::class, 'doctor_id', 'user_id');
+        return $query->where('role', 'admin');
     }
 }

@@ -9,23 +9,36 @@ class Doctor extends Model
 {
     use HasFactory;
 
+    protected $table = 'doctor';
+    protected $primaryKey = 'doctor_id';
+
     protected $fillable = [
-        'name',
+        'users_id',
+        'bmdc_reg_no',
         'specialization',
-        'experience',
+        'years_of_experience',
+        'consultation_fee',
+        'education',
         'phone',
-        'email',
-        'available_days',
-        'available_times'
     ];
 
-    protected $casts = [
-        'available_days' => 'array',
-        'available_times' => 'array'
-    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'users_id', 'users_id');
+    }
 
     public function appointments()
     {
-        return $this->hasMany(Appointment::class);
+        return $this->hasMany(Appointment::class, 'doctor_id', 'doctor_id');
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany(DoctorSchedule::class, 'doctor_id', 'doctor_id');
+    }
+
+    public function hospitals()
+    {
+        return $this->belongsToMany(Hospital::class, 'works_at', 'doctor_id', 'hospital_id');
     }
 }
