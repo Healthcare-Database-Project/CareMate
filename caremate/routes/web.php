@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\PatientDashboardController;
 use App\Http\Controllers\MedicineCatalogueController;
 
 Route::get('/', function () {
@@ -311,9 +312,9 @@ Route::get('/signup', function(){
 Route::post('/signup', [App\Http\Controllers\SignupController::class, 'store'])->name('signup.attempt');
 // ...existing code...
 
-Route::get('/userdashboard', function () {
-    return view('login.userdashboard', ['user' => Auth::user()]);
-})->middleware('auth')->name('userdashboard');
+Route::get('/userdashboard', [PatientDashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('userdashboard');
 
 Route::get('/admindashboard', function(){
     return view('admin.admindashboard', ['user' => Auth::user()]);
@@ -323,5 +324,6 @@ Route::get('/doctordashboard', function(){
     return view('doctor.doctordashboard', ['user' => Auth::user()]);
 })->middleware('auth')->name('doctordashboard');
 
-
+Route::get('/medicinecatalogue/tracker', [MedicineCatalogueController::class, 'tracker'])->name('medicinecatalogue.tracker');
+Route::post('/medicinecatalogue/add-to-tracker', [MedicineCatalogueController::class, 'addToTracker'])->name('medicinecatalogue.addToTracker');
 

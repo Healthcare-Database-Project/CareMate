@@ -33,7 +33,7 @@ return new class extends Migration
         Schema::create('health_info', function (Blueprint $table) {
             $table->id('info_id');
             $table->date('date_of_recording');
-            $table->time('time_of_recording');
+            $table->time('time_of_recording')->nullable();
             $table->unsignedBigInteger('patient_id');
             $table->foreign('patient_id')->references('patient_id')->on('patient')->onDelete('cascade');
             $table->timestamps();
