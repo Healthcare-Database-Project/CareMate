@@ -47,6 +47,20 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // Create has_illness table
+        // Create has_illness table (pivot table between patient and illness)
+        Schema::create('has_illness', function (Blueprint $table) {
+            $table->unsignedBigInteger('patient_id');
+            $table->unsignedBigInteger('illness_id');
+            $table->date('diagnosis_date')->nullable();
+        
+            $table->foreign('patient_id')->references('patient_id')->on('patient')->onDelete('cascade');
+            $table->foreign('illness_id')->references('illness_id')->on('illness')->onDelete('cascade');
+        
+            $table->primary(['patient_id', 'illness_id']);
+        });
+
+
         // Create Medicine_Log table
         Schema::create('medicine_log', function (Blueprint $table) {
             $table->unsignedBigInteger('mlog_id');
