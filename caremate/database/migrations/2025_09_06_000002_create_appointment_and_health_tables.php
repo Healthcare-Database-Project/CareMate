@@ -110,6 +110,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('has_illness');
         Schema::dropIfExists('body_temperature');
         Schema::dropIfExists('blood_pressure');
         Schema::dropIfExists('blood_sugar_level');
