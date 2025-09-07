@@ -324,6 +324,16 @@ Route::get('/doctordashboard', function(){
     return view('doctor.doctordashboard', ['user' => Auth::user()]);
 })->middleware('auth')->name('doctordashboard');
 
+
 Route::get('/medicinecatalogue/tracker', [MedicineCatalogueController::class, 'tracker'])->name('medicinecatalogue.tracker');
 Route::post('/medicinecatalogue/add-to-tracker', [MedicineCatalogueController::class, 'addToTracker'])->name('medicinecatalogue.addToTracker');
 
+
+Route::get('/patient/profile', [PatientDashboardController::class, 'showProfile'])->name('patient.profile');
+Route::post('/patient/profile', [PatientDashboardController::class, 'updateProfile'])->name('patient.profile.update');
+
+Route::post('/patient/bp-log', [PatientDashboardController::class, 'logBloodPressure'])->name('patient.bp.log');
+Route::get('/patient/bp-monthly', [PatientDashboardController::class, 'monthlyBloodPressure'])->name('patient.bp.monthly');
+
+Route::post('/patient/bs-log', [PatientDashboardController::class, 'logBloodSugar'])->name('patient.bs.log');
+Route::get('/patient/bs-monthly', [PatientDashboardController::class, 'monthlyBloodSugar'])->name('patient.bs.monthly');
