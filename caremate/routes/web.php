@@ -304,13 +304,11 @@ Route::get('/login', function(){
 
 Route::post('login', LoginController::class)->name('login.attempt');
 
-// ...existing code...
 Route::get('/signup', function(){
     return view('login.signup');
 })->name('signup');
 
 Route::post('/signup', [App\Http\Controllers\SignupController::class, 'store'])->name('signup.attempt');
-// ...existing code...
 
 Route::get('/userdashboard', [PatientDashboardController::class, 'index'])
     ->middleware('auth')

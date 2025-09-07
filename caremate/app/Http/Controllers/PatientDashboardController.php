@@ -188,7 +188,7 @@ class PatientDashboardController extends Controller
             $startOfMonth = Carbon::now()->startOfMonth();
             $endOfMonth = Carbon::now()->endOfMonth();
             $bsMonth = DB::table('health_info')
-                ->join('blood_sugar_level', 'health_info.info_id', '=', 'blood_sugar.b_sugar_id')
+                ->join('blood_sugar_level', 'health_info.info_id', '=', 'blood_sugar_level.b_sugar_id')
                 ->where('health_info.patient_id', $patient->patient_id)
                 ->whereBetween('health_info.date_of_recording', [$startOfMonth->toDateString(), $endOfMonth->toDateString()])
                 ->select('health_info.date_of_recording', 'health_info.time_of_recording', 'blood_sugar_level.blood_sugar_level')
