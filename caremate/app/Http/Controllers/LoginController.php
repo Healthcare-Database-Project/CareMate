@@ -21,9 +21,9 @@ class LoginController extends Controller
             $user = Auth::user();
 
             // Check if user is a doctor
-            $isDoctor = DB::table('doctors')->where('doctor_id', $user->user_id)->exists();
-            $isPatient = DB::table('patients')->where('patient_id', $user->user_id)->exists();
-            $isAdmin = DB::table('admins')->where('admin_id', $user->user_id)->exists();
+            $isDoctor = DB::table('doctor')->where('users_id', $user->users_id)->exists();
+            $isPatient = DB::table('patient')->where('users_id', $user->users_id)->exists();
+            $isAdmin = DB::table('admin')->where('users_id', $user->users_id)->exists();
  
              // Redirect based on role
 

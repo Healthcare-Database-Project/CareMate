@@ -6,35 +6,59 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use Carbon\Carbon;
 
 class SignupController extends Controller
 {
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'         => 'required|string|max:255',
+            'first_name'   => 'required|string|max:255',
+            'last_name'    => 'required|string|max:255',
             'email'        => 'required|email|unique:users,email',
             'password'     => 'required|string|min:6',
             'account_type' => 'required|in:patient,doctor,admin',
+            'phone_number' => 'required|string|max:20',
+            'gender'       => 'required|string|max:10',
         ]);
 
         // Create user
         $user = User::create([
-            'name'        => $validated['name'],
-            'email'       => $validated['email'],
-            'password'    => Hash::make($validated['password']),
-            'phone_number'=> '01700000000', // You can add phone, gender, birth_date fields to the form if needed
-            'gender'      => 'Female',
-            'birth_date'  => '2002-01-01',
+            'first_name' => $validated['first_name'],
+            'last_name'  => $validated['last_name'],
+            'email'      => $validated['email'],
+            'password'   => Hash::make($validated['password']),
+            'role'       => $validated['account_type'],
         ]);
 
         // Add to role-specific table
         if ($validated['account_type'] === 'patient') {
-            DB::table('patients')->insert(['patient_id' => $user->user_id]);
+            DB::table('patient')->insert([
+                'users_id'          => $user->users_id,
+                'phone'             => $validated['phone_number'],
+                'age'               => 18, 
+                'sex'               => $validated['gender'], 
+                'address'           => '', 
+                'blood_group'       => '', 
+                'emergency_contact' => '',
+            ]);
+
         } elseif ($validated['account_type'] === 'doctor') {
-            DB::table('doctors')->insert(['doctor_id' => $user->user_id, 'specialization' => '']);
+            DB::table('doctor')->insert([
+                'users_id' => $user->users_id,
+                'bmdc_reg_no' => uniqid('BMDC'), 
+                'specialization' => '', 
+                'years_of_experience' => 0,
+                'consultation_fee' => 0, 
+                'education' => '', 
+                'phone' => $validated['phone_number'],
+            ]);
         } elseif ($validated['account_type'] === 'admin') {
-            DB::table('admins')->insert(['admin_id' => $user->user_id]);
+            DB::table('admin')->insert([
+                'users_id' => $user->users_id,
+                'admin_level' => '', 
+                'department' => ''
+            ]);
         }
 
         return redirect()->route('login')->with('success', 'Account created! Please login.');

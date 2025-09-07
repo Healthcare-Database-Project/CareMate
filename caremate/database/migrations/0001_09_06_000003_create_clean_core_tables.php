@@ -43,7 +43,6 @@ return new class extends Migration
             $table->integer('age');
             $table->enum('sex', ['Male', 'Female', 'Other']);
             $table->text('address');
-            $table->text('medical_history')->nullable();
             $table->string('blood_group');
             $table->string('emergency_contact');
             

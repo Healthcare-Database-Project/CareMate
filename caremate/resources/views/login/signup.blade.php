@@ -12,11 +12,16 @@
         <h2 class="text-3xl font-bold text-center text-blue-700 mb-6">Create an Account</h2>
         <form method="POST" action="{{ route('signup.attempt') }}" class="space-y-5">
             @csrf
-            <div>
-                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                <input type="text" name="name" id="name" required
-                    class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
-            </div>
+        <div>
+            <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+            <input type="text" name="first_name" id="first_name" required
+                class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        </div>
+        <div>
+            <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+            <input type="text" name="last_name" id="last_name" required
+                class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        </div>
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
                 <input type="email" name="email" id="email" required
@@ -42,11 +47,12 @@
                     <option value="Other">Other</option>
                 </select>
             </div>
-            <div>
+            <!-- <div>
                 <label for="birth_date" class="block text-sm font-medium text-gray-700">Birth Date</label>
                 <input type="date" name="birth_date" id="birth_date" required
                     class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
-            </div>
+            </div> -->
+            <!-- birth date was removed from database without agreement and not fixed later -->
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Account Type</label>

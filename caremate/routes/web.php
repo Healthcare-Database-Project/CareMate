@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\AppointmentController;
 use App\Models\MedicineCatalogue;
 use App\Http\Livewire\MedicineCart;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\MedicineCatalogueController;
 
 Route::get('/', function () {
@@ -310,17 +311,17 @@ Route::get('/signup', function(){
 Route::post('/signup', [App\Http\Controllers\SignupController::class, 'store'])->name('signup.attempt');
 // ...existing code...
 
-Route::get('/userdashboard', function(){
-    return view('user.userdashboard');
-})->name('userdashboard');
+Route::get('/userdashboard', function () {
+    return view('login.userdashboard', ['user' => Auth::user()]);
+})->middleware('auth')->name('userdashboard');
 
 Route::get('/admindashboard', function(){
-    return view('admin.admindashboard');
-})->name('admindashboard');
+    return view('admin.admindashboard', ['user' => Auth::user()]);
+})->middleware('auth')->name('admindashboard');
 
 Route::get('/doctordashboard', function(){
-    return view('doctor.doctordashboard');
-})->name('doctordashboard');
+    return view('doctor.doctordashboard', ['user' => Auth::user()]);
+})->middleware('auth')->name('doctordashboard');
 
 
 
