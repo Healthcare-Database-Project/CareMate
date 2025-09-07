@@ -48,7 +48,6 @@ return new class extends Migration
         });
 
         // Create has_illness table
-        // Create has_illness table (pivot table between patient and illness)
         Schema::create('has_illness', function (Blueprint $table) {
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('illness_id');
