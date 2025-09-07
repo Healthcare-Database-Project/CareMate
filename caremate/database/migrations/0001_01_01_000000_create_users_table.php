@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id('user_id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone_number')->unique();
-            $table->string('gender');
-            $table->date('birth_date');
+            $table->string('phone_number')->unique()->default('01700000000');
+            $table->string('gender')->default('Female');
+            $table->date('birth_date')->default('1990-01-01');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

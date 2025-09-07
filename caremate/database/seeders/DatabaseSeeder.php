@@ -15,12 +15,17 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        User::factory()->create([
+            'name' => 'test',
+            'email' => 'test@email.com',
+        ]);
+        
         $this->call([
             medicine_catalogue_seeder::class
+        ]);
+
+        $this->call([
+            UserSeeder::class
         ]);
     }
 }
