@@ -12,58 +12,58 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $table = 'users';
+    protected $primaryKey = 'users_id';
+
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
-        'phone_number',
-        'gender',
-        'birth_date',
-        'password',
+        'role',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'birth_date' => 'date',
-    ];
-    
-    /**
-     * Get the primary key for the model.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'user_id';
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
 
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = true;
+    public function patient()
+    {
+        return $this->hasOne(Patient::class, 'users_id', 'users_id');
+    }
 
-    /**
-     * The "type" of the auto-incrementing ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'int';
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class, 'users_id', 'users_id');
+    }
+
+    public function admin()
+    {
+        return $this->hasOne(Admin::class, 'users_id', 'users_id');
+    }
+
+    // Helper scopes for role-based queries
+    public function scopePatients($query)
+    {
+        return $query->where('role', 'patient');
+    }
+
+    public function scopeDoctors($query)
+    {
+        return $query->where('role', 'doctor');
+    }
+
+    public function scopeAdmins($query)
+    {
+        return $query->where('role', 'admin');
+    }
 }

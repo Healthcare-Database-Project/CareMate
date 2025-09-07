@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('date_of_recording');
             $table->time('time_of_recording');
             $table->unsignedBigInteger('patient_id');
-            $table->foreign('patient_id')->references('patient_id')->on('patients');
+            $table->foreign('patient_id')->references('patient_id')->on('patient');
         });
 
         Schema::create('medicine_log', function(Blueprint $table) {

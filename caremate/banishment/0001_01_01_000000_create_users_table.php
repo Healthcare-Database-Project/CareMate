@@ -19,6 +19,16 @@ return new class extends Migration
             $table->string('gender')->default('Female');
             $table->date('birth_date')->default('1990-01-01');
             $table->string('password');
+            $table->enum('role', ['patient', 'doctor'])->default('patient');
+            
+            // Doctor-specific fields (nullable for patients)
+            $table->string('specialization')->nullable();
+            $table->integer('experience_years')->nullable();
+            $table->string('location')->nullable();
+            $table->decimal('consultation_fee', 8, 2)->nullable();
+            $table->json('availability')->nullable();
+            $table->text('bio')->nullable();
+            
             $table->rememberToken();
             $table->timestamps();
         });
