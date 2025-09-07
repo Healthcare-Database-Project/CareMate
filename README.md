@@ -37,3 +37,4 @@ It integrates features like appointment booking, doctor lookup, medicine shoppin
    ```bash
    git clone https://github.com/your-username/caremate.git
    cd caremate
+   php artisan serve
