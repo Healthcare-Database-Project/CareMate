@@ -9,6 +9,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PatientDashboardController;
 use App\Http\Controllers\MedicineCatalogueController;
+use App\Http\Controllers\DoctorDashboardController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -304,6 +306,15 @@ Route::get('/login', function(){
 
 Route::post('login', LoginController::class)->name('login.attempt');
 
+
+Route::post('/logout', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/login');
+})->name('logout');
+
+
 Route::get('/signup', function(){
     return view('login.signup');
 })->name('signup');
@@ -315,13 +326,12 @@ Route::get('/userdashboard', [PatientDashboardController::class, 'index'])
     ->name('userdashboard');
 
 Route::get('/admindashboard', function(){
-    return view('admin.admindashboard', ['user' => Auth::user()]);
+    return view('login.admindashboard', ['user' => Auth::user()]);
 })->middleware('auth')->name('admindashboard');
 
-Route::get('/doctordashboard', function(){
-    return view('doctor.doctordashboard', ['user' => Auth::user()]);
-})->middleware('auth')->name('doctordashboard');
-
+Route::get('/doctordashboard', [DoctorDashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('doctordashboard');
 
 Route::get('/medicinecatalogue/tracker', [MedicineCatalogueController::class, 'tracker'])->name('medicinecatalogue.tracker');
 Route::post('/medicinecatalogue/add-to-tracker', [MedicineCatalogueController::class, 'addToTracker'])->name('medicinecatalogue.addToTracker');
@@ -335,3 +345,9 @@ Route::get('/patient/bp-monthly', [PatientDashboardController::class, 'monthlyBl
 
 Route::post('/patient/bs-log', [PatientDashboardController::class, 'logBloodSugar'])->name('patient.bs.log');
 Route::get('/patient/bs-monthly', [PatientDashboardController::class, 'monthlyBloodSugar'])->name('patient.bs.monthly');
+
+Route::post('/patient/illness-log', [PatientDashboardController::class, 'logIllness'])->name('patient.illness.log');
+Route::get('/patient/medical-history', [PatientDashboardController::class, 'medicalHistory'])->name('patient.medical.history');
+
+Route::get('/doctor/profile', [DoctorDashboardController::class, 'showProfile'])->name('doctor.profile');
+Route::post('/doctor/profile', [DoctorDashboardController::class, 'updateProfile'])->name('doctor.profile.update');
