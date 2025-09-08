@@ -35,39 +35,42 @@
     <div class="overflow-x-auto bg-white rounded-lg shadow-lg">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">ID</th>
-                    <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">Doctor</th>
-                    <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">Patient</th>
-                    <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">Date</th>
-                    <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">Time</th>
-                    <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">Status</th>
-                    <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">Change Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($appointments as $appt)
-                    <tr>
-                        <td class="px-4 py-2">{{ $appt->appointment_id }}</td>
-                        <td class="px-4 py-2">{{ $appt->doctor_id }}</td>
-                        <td class="px-4 py-2">{{ $appt->patient_id }}</td>
-                        <td class="px-4 py-2">{{ $appt->appointment_date }}</td>
-                        <td class="px-4 py-2">{{ $appt->appointment_time }}</td>
-                        <td class="px-4 py-2 font-semibold">{{ ucfirst($appt->appointment_status) }}</td>
-                        <td class="px-4 py-2">
-                            <form action="{{ route('admin.appointment.status', $appt->appointment_id) }}" method="POST" class="flex items-center space-x-2">
-                                @csrf
-                                <select name="appointment_status" class="border rounded px-2 py-1 text-xs">
-                                    @foreach(['pending','confirmed','completed','cancelled'] as $status)
-                                        <option value="{{ $status }}" @if($appt->appointment_status == $status) selected @endif>{{ ucfirst($status) }}</option>
-                                    @endforeach
-                                </select>
-                                <button type="submit" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600">Update</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
+    <tr>
+        <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">ID</th>
+        <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">Doctor</th>
+        <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">Patient</th>
+        <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">Date</th>
+        <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">Time</th>
+        <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">Status</th>
+        <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">Serial No.</th>
+        <th class="px-4 py-2 text-left text-xs font-bold text-gray-700">Change Status / Serial</th>
+    </tr>
+</thead>
+<tbody>
+    @foreach($appointments as $appt)
+        <tr>
+            <td class="px-4 py-2">{{ $appt->appointment_id }}</td>
+            <td class="px-4 py-2">{{ $appt->doctor_id }}</td>
+            <td class="px-4 py-2">{{ $appt->patient_id }}</td>
+            <td class="px-4 py-2">{{ $appt->appointment_date }}</td>
+            <td class="px-4 py-2">{{ $appt->appointment_time }}</td>
+            <td class="px-4 py-2 font-semibold">{{ ucfirst($appt->appointment_status) }}</td>
+            <td class="px-4 py-2">{{ $appt->serial_no }}</td>
+            <td class="px-4 py-2">
+                <form action="{{ route('admin.appointment.status', $appt->appointment_id) }}" method="POST" class="flex items-center space-x-2">
+                    @csrf
+                    <select name="appointment_status" class="border rounded px-2 py-1 text-xs">
+                        @foreach(['pending','confirmed','completed','cancelled'] as $status)
+                            <option value="{{ $status }}" @if($appt->appointment_status == $status) selected @endif>{{ ucfirst($status) }}</option>
+                        @endforeach
+                    </select>
+                    <input type="text" name="serial_no" value="{{ $appt->serial_no }}" placeholder="Serial" class="border rounded px-2 py-1 text-xs w-20">
+                    <button type="submit" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600">Update</button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
+</tbody>
         </table>
     </div>
 </div>

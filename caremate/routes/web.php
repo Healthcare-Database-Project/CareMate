@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\DoctorDashboardController;
 use App\Http\Controllers\PatientDashboardController;
 use App\Http\Controllers\MedicineCatalogueController;
-use App\Http\Controllers\DoctorDashboardController;
 
 
 Route::get('/', function () {
@@ -325,9 +326,14 @@ Route::get('/userdashboard', [PatientDashboardController::class, 'index'])
     ->middleware('auth')
     ->name('userdashboard');
 
-Route::get('/admindashboard', function(){
-    return view('login.admindashboard', ['user' => Auth::user()]);
-})->middleware('auth')->name('admindashboard');
+
+Route::get('/admindashboard', [App\Http\Controllers\AdminDashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('admindashboard');
+
+Route::post('/admin/appointments/{id}/status', [AdminDashboardController::class, 'updateAppointmentStatus'])
+    ->middleware('auth')
+    ->name('admin.appointment.status');
 
 Route::get('/doctordashboard', [DoctorDashboardController::class, 'index'])
     ->middleware('auth')
