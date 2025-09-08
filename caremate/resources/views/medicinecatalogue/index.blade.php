@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="container mx-auto p-8">
+    <nav class="mb-6 flex justify-end">
+    <a href="{{ url('/') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-semibold transition">
+        Home
+    </a>
+    </nav>
     <h1 class="text-center text-4xl">Medicine Catalogue</h1>
     @include('partials._search')
     {{-- {{ print_r(session()->get('cart'))}} --}}

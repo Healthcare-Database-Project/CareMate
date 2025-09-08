@@ -2,6 +2,14 @@
 
 @section('content')
 <div class="container mx-auto py-8 px-4">
+    <nav class="mb-6 flex justify-between">
+        <a href="{{ url('/') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-semibold transition">
+            Home
+        </a>
+        <a href="{{ route('home') }}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 font-semibold transition">
+            Back to Catalogue
+        </a>
+    </nav>
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold px-2 ">Medicine Cart</h1>
         @if(count($cart) > 0)
