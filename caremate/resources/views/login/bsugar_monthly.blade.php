@@ -36,7 +36,7 @@
                     <tr>
                         <td class="px-4 py-2">{{ $bs->date_of_recording }}</td>
                         <td class="px-4 py-2">{{ $bs->time_of_recording }}</td>
-                        <td class="px-4 py-2">{{ $bs->blood_sugar }}</td>
+                        <td class="px-4 py-2">{{ $bs->blood_sugar_level }}</td>
                     </tr>
                 @endforeach
             </tbody>

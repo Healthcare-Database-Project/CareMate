@@ -14,7 +14,7 @@ class PatientDashboardController extends Controller
         $user = Auth::user();
         $patient = DB::table('patient')->where('users_id', $user->users_id)->first();
 
-        // Medicine history (existing code)
+        // Medicine history
         $medicineHistory = [];
         if ($patient) {
             $healthInfos = DB::table('health_info')->where('patient_id', $patient->patient_id)->pluck('info_id');
@@ -61,6 +61,7 @@ class PatientDashboardController extends Controller
 
         return view('login.userdashboard', [
             'user' => $user,
+            'patient' => $patient,
             'medicineHistory' => $medicineHistory,
             'bpWeek' => $bpWeek,
             'bsWeek' => $bsWeek,
@@ -188,7 +189,7 @@ class PatientDashboardController extends Controller
             $startOfMonth = Carbon::now()->startOfMonth();
             $endOfMonth = Carbon::now()->endOfMonth();
             $bsMonth = DB::table('health_info')
-                ->join('blood_sugar_level', 'health_info.info_id', '=', 'blood_sugar.b_sugar_id')
+                ->join('blood_sugar_level', 'health_info.info_id', '=', 'blood_sugar_level.b_sugar_id')
                 ->where('health_info.patient_id', $patient->patient_id)
                 ->whereBetween('health_info.date_of_recording', [$startOfMonth->toDateString(), $endOfMonth->toDateString()])
                 ->select('health_info.date_of_recording', 'health_info.time_of_recording', 'blood_sugar_level.blood_sugar_level')
@@ -217,17 +218,28 @@ class PatientDashboardController extends Controller
         ]);
     }
 
+    public function showProfile()
+    {
+        $user = Auth::user();
+        $patient = DB::table('patient')->where('users_id', $user->users_id)->first();
+
+        return view('login.patientprofile', [
+            'user' => $user,
+            'patient' => $patient
+        ]);
+    }
+
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            'email'      => 'required|email|unique:users,email,' . $user->users_id . ',users_id',
-            'sex'        => 'required|in:Male,Female,Other',
-            'phone'      => 'required|string|max:20',
-            'address'    => 'nullable|string|max:255',
-            'blood_group'=> 'nullable|string|max:10',
+            'first_name'        => 'required|string|max:255',
+            'last_name'         => 'required|string|max:255',
+            'email'             => 'required|email|unique:users,email,' . $user->users_id . ',users_id',
+            'gender'            => 'required|in:Male,Female,Other',
+            'phone'             => 'required|string|max:20',
+            'address'           => 'nullable|string|max:255',
+            'blood_group'       => 'nullable|string|max:10',
             'emergency_contact' => 'nullable|string|max:20',
         ]);
 
@@ -236,7 +248,6 @@ class PatientDashboardController extends Controller
             'first_name' => $validated['first_name'],
             'last_name'  => $validated['last_name'],
             'email'      => $validated['email'],
-            'gender'     => $validated['gender'],
         ]);
 
         // Update patient table
@@ -249,5 +260,56 @@ class PatientDashboardController extends Controller
         ]);
 
         return redirect()->route('patient.profile')->with('success', 'Profile updated successfully!');
+    }
+    // Log illness
+    public function logIllness(Request $request)
+    {
+        $user = Auth::user();
+        $patient = DB::table('patient')->where('users_id', $user->users_id)->first();
+
+        $validated = $request->validate([
+            'date_of_recording' => 'required|date',
+            'time_of_recording' => 'required',
+            'illness_name'      => 'required|string|max:100',
+            'illness_type'      => 'required|string|max:100',
+        ]);
+
+        // Insert into health_info
+        $info_id = DB::table('health_info')->insertGetId([
+            'date_of_recording' => $validated['date_of_recording'],
+            'time_of_recording' => $validated['time_of_recording'],
+            'patient_id'        => $patient->patient_id,
+        ]);
+
+        // Insert into illness
+        DB::table('illness')->insert([
+            'illness_id'    => $info_id,
+            'illness_name'  => $validated['illness_name'],
+            'illness_type'  => $validated['illness_type'],
+        ]);
+
+        return redirect()->route('userdashboard')->with('success', 'Illness record added!');
+    }
+
+    // Medical history page
+    public function medicalHistory()
+    {
+        $user = Auth::user();
+        $patient = DB::table('patient')->where('users_id', $user->users_id)->first();
+
+        $illnesses = [];
+        if ($patient) {
+            $illnesses = DB::table('health_info')
+                ->join('illness', 'health_info.info_id', '=', 'illness.illness_id')
+                ->where('health_info.patient_id', $patient->patient_id)
+                ->select('health_info.date_of_recording', 'health_info.time_of_recording', 'illness.illness_name', 'illness.illness_type')
+                ->orderBy('health_info.date_of_recording', 'desc')
+                ->orderBy('health_info.time_of_recording', 'desc')
+                ->get();
+        }
+
+        return view('login.medical_history', [
+            'illnesses' => $illnesses,
+        ]);
     }
 }

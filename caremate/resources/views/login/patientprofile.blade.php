@@ -2,7 +2,12 @@
 
 @section('content')
 <div class="max-w-xl mx-auto mt-10 bg-white rounded shadow p-8">
-    <h2 class="text-2xl font-bold mb-6 text-blue-700">Patient Profile</h2>
+    <div class="max-w-xl mx-auto mt-10 bg-white rounded shadow p-8">
+        <h2 class="text-2xl font-bold mb-6 text-blue-700">Patient Profile</h2>
+        <a href="{{ route('userdashboard') }}" class="mb-4 inline-block bg-gray-300 text-gray-800 px-4 py-1 rounded hover:bg-gray-400 transition">
+            &larr; Return to Dashboard
+        </a>
+    </div>
     @if(session('success'))
         <div class="mb-4 p-2 bg-green-100 text-green-700 rounded">{{ session('success') }}</div>
     @endif
