@@ -19,7 +19,7 @@ It integrates features like appointment booking, doctor lookup, medicine shoppin
 
 ## 🛠 Tech Stack
 
-- **Front End:** Svelte
+- **Front End:** Tailwind CSS
 - **Back End:** Laravel
 - **Database:** MySQL
 
