@@ -34,39 +34,27 @@ class AppointmentController extends Controller
             'symptoms' => 'nullable|string'
         ]);
 
-        // For now, use the first patient or create a default one
-        $patient = Patient::first();
-        if (!$patient) {
-            // Create a default patient if none exists
-            $user = User::create([
-                'first_name' => 'Default',
-                'last_name' => 'Patient',
-                'email' => 'default@patient.com',
-                'password' => bcrypt('password123'),
-                'role' => 'patient',
-            ]);
+        if (!auth()->check()) {
+        return redirect()->route('appointments.index')->with('error', 'You must be logged in to book an appointment.');
+    }
 
-            $patient = Patient::create([
-                'users_id' => $user->users_id,
-                'phone' => '+880-1711-000000',
-                'age' => 30,
-                'sex' => 'Other',
-                'address' => 'Default Address',
-                'medical_history' => 'No history available',
-                'blood_group' => 'Unknown',
-                'emergency_contact' => '+880-1711-000001',
-            ]);
-        }
+    // Get the patient record for the currently logged-in user
+    $user = auth()->user();
+    $patient = Patient::where('users_id', $user->users_id)->first();
 
-        Appointment::create([
-            'patient_id' => $patient->patient_id,
-            'doctor_id' => $request->doctor_id,
-            'appointment_date' => $request->appointment_date,
-            'appointment_time' => $request->appointment_time,
-            'appointment_status' => 'pending'
-        ]);
+    if (!$patient) {
+        return redirect()->route('appointments.index')->with('error', 'Patient record not found for this user.');
+    }
 
-        return redirect()->route('appointments.index')->with('success', 'Appointment booked successfully!');
+    Appointment::create([
+        'patient_id' => $patient->patient_id,
+        'doctor_id' => $request->doctor_id,
+        'appointment_date' => $request->appointment_date,
+        'appointment_time' => $request->appointment_time,
+        'appointment_status' => 'pending'
+    ]);
+
+    return redirect()->route('appointments.index')->with('success', 'Appointment booked successfully!');
     }
 
     public function show($id)
@@ -76,29 +64,24 @@ class AppointmentController extends Controller
     }
 
     public function myAppointments()
-    {
-        // For demo purposes, if no user is authenticated, show appointments for the first patient
-        if (!auth()->check()) {
-            // Get the first patient for demo purposes
-            $patient = Patient::first();
-            
-            if (!$patient) {
-                return redirect()->route('appointments.index')->with('error', 'No patient records found. Please create a patient first.');
-            }
-        } else {
-            // Get current user's patient record
-            $patient = auth()->user()->patient;
-            
-            if (!$patient) {
-                return redirect()->route('appointments.index')->with('error', 'Patient record not found.');
-            }
-        }
-
-        $appointments = Appointment::with(['doctor.user'])
-            ->where('patient_id', $patient->patient_id)
-            ->orderBy('appointment_date', 'desc')
-            ->get();
-        
-        return view('appointments.my-appointments', compact('appointments'));
+{
+    if (!auth()->check()) {
+        return redirect()->route('appointments.index')->with('error', 'You must be logged in to view your appointments.');
     }
+
+    // Get current user's patient record
+    $user = auth()->user();
+    $patient = Patient::where('users_id', $user->users_id)->first();
+
+    if (!$patient) {
+        return redirect()->route('appointments.index')->with('error', 'Patient record not found.');
+    }
+
+    $appointments = Appointment::with(['doctor.user'])
+        ->where('patient_id', $patient->patient_id)
+        ->orderBy('appointment_date', 'desc')
+        ->get();
+
+    return view('appointments.my-appointments', compact('appointments'));
+}
 }

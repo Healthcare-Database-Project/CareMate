@@ -3,7 +3,9 @@
 @section('content')
 <div class="max-w-2xl mx-auto mt-10 bg-white rounded shadow p-8">
     <h2 class="text-2xl font-bold mb-6 text-purple-700">Monthly Blood Sugar Report</h2>
-    <a href="{{ route('userdashboard') }}" class="mb-4 inline-block bg-gray-300 text-gray-800 px-4 py-1 rounded hover:bg-gray-400 transition">Back to Dashboard</a>
+    <a href="{{ route('userdashboard') }}" class="mb-4 inline-block bg-gray-300 text-gray-800 px-4 py-1 rounded hover:bg-gray-400 transition">
+        &larr; Return to Dashboard
+    </a>
 
     @if(isset($avgSugar))
         <div class="mb-4">

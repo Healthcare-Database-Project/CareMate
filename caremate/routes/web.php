@@ -14,7 +14,7 @@ use App\Http\Controllers\DoctorDashboardController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::get('/test-db', function () {
     try {
@@ -351,3 +351,13 @@ Route::get('/patient/medical-history', [PatientDashboardController::class, 'medi
 
 Route::get('/doctor/profile', [DoctorDashboardController::class, 'showProfile'])->name('doctor.profile');
 Route::post('/doctor/profile', [DoctorDashboardController::class, 'updateProfile'])->name('doctor.profile.update');
+
+Route::get('/doctor/patients', [DoctorDashboardController::class, 'myPatients'])->name('doctor.patients');
+Route::get('/doctor/patient/{patient_id}', [DoctorDashboardController::class, 'patientDetails'])->name('doctor.patient.details');
+Route::get('/my-appointments', [App\Http\Controllers\AppointmentController::class, 'myAppointments'])->name('appointments.my');
+
+Route::post('/doctor/schedule/add', [DoctorDashboardController::class, 'addSchedule'])->name('doctor.schedule.add');
+Route::post('/doctor/schedule/delete/{schedule_id}', [DoctorDashboardController::class, 'deleteSchedule'])->name('doctor.schedule.delete');
+
+
+Route::get('/doctorsappointments', [DoctorDashboardController::class, 'doctorsAppointments'])->name('doctor.appointments');

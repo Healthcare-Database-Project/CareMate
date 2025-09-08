@@ -7,7 +7,7 @@
     <!-- Navbar/Header -->
     <nav class="navbar bg-white bg-opacity-95 backdrop-blur shadow fixed w-full top-0 z-50">
         <div class="nav-container max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
-            <a href="#" class="logo text-2xl font-bold text-blue-600">CareMate</a>
+            <a href="{{ route('welcome') }}" class="logo text-2xl font-bold text-blue-600">CareMate</a>
             <ul class="nav-links flex gap-8 list-none items-center">
                 <li><a href="{{ route('home') }}" class="text-gray-700 font-medium hover:text-blue-600 transition">Medicines</a></li>
                 <li><a href="{{ route('appointments.index') }}" class="text-gray-700 font-medium hover:text-blue-600 transition">Book Appointments</a></li>
@@ -35,12 +35,7 @@
             <p class="text-blue-100 text-lg">Here’s your dashboard overview.</p>
         </div>
     </div>
-    
-    <div class="mb-6">
-        <a href="{{ route('medicinecatalogue.tracker') }}" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition">
-            Go to Medicine Tracker
-        </a>
-    </div>
+
 
     <!-- User Info Card -->
     <div class="bg-white rounded-xl shadow p-6 mb-8">
@@ -90,6 +85,12 @@
         @endif
     </div>
 
+    <div class="mb-6">
+        <a href="{{ route('medicinecatalogue.tracker') }}" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition">
+            Go to Medicine Tracker
+        </a>
+    </div>
+
     <!-- Blood Pressure Tracker -->
     <div class="bg-white rounded shadow p-4 mb-6">
         <h2 class="text-xl font-semibold mb-4">Blood Pressure Tracker</h2>
@@ -128,7 +129,7 @@
         @endif
 
         <!-- Monthly Report Link -->
-        <a href="{{ route('patient.bp.monthly') }}" class="inline-block mt-2 bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600 transition">
+        <a href="{{ route('patient.bp.monthly') }}" class="inline-block mt-2 bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition">
             View Monthly Report
         </a>
     </div>
